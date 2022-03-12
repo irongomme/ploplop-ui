@@ -1,6 +1,7 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
 import channel from './channel';
+// import socket from './socket';
 import writer from './writer';
 
 // import example from './module-example'
@@ -18,6 +19,7 @@ export default store((/* { ssrContext } */) => {
   const Store = createStore({
     modules: {
       channel,
+      // socket,
       writer,
     },
 

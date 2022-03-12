@@ -24,8 +24,9 @@ module.exports = configure((ctx) => ({
   // https://quasar.dev/quasar-cli/boot-files
   boot: [
     'bootstrap',
-    'i18n',
+    // 'i18n',
     'axios',
+    'socket.io',
   ],
 
   // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -83,6 +84,16 @@ module.exports = configure((ctx) => ({
     },
     port: 8080,
     open: true, // opens browser window automatically
+   /* proxy: {
+      '/ws': {
+        target: 'localhost:4000',
+        changeOrigin: true,
+        // ws: true,
+        pathRewrite: {
+          '^/ws': '',
+        },
+      },
+    }, */
   },
 
   // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

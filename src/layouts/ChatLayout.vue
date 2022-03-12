@@ -1,12 +1,24 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout
+    view="hHh lpr lfr"
+    class="q-mx-auto"
+    style="max-width: 1396px;"
+  >
+    <q-drawer
+      v-model="leftDrawerOpen"
+      side="left"
+      show-if-above
+      bordered
+    >
+      PROUT
+    </q-drawer>
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <q-footer class="bg-white text-white q-ma-xs">
+    <q-footer class="q-pa-md" style="background-color: inherit;">
       <MessageInput />
     </q-footer>
+
   </q-layout>
 </template>
 
@@ -23,6 +35,7 @@ export default defineComponent({
 
   setup() {
     return {
+      leftDrawerOpen: true,
     };
   },
 });
