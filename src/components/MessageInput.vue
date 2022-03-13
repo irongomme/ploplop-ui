@@ -70,7 +70,7 @@ export default defineComponent({
       };
 
       socket.emit(
-        'message',
+        'message::send',
         $store.state.channel.name,
         socketMessage,
       );

@@ -43,7 +43,7 @@ export default defineComponent({
   beforeCreate() {
     // console.log(this.$socket);
     this.$socket.emit(
-      'join_room',
+      'room::join',
       this.$store.$router.currentRoute.value.params.channel,
       this.$store.state.writer,
     );
@@ -51,19 +51,19 @@ export default defineComponent({
     this.$socket.on('connected', () => {
       // console.log('connected');
       this.$socket.emit(
-        'join_room',
+        'room::join',
         this.$store.$router.currentRoute.value.params.channel,
         this.$store.state.writer,
       );
     });
 
-    this.$socket.on('message_reveive', (room) => {
+    this.$socket.on('message::sent', (room) => {
       // console.log('message_reveive', room);
       if (room.name === this.$store.state.channel.name) {
         this.$store.dispatch('channel/setMessages', room.messages);
       }
     });
-    this.$socket.on('room_joined', (room) => {
+    this.$socket.on('room::joined', (room) => {
       // console.log('room_joined', room);
       if (room.name === this.$store.state.channel.name) {
         this.$store.dispatch('channel/setMessages', room.messages);
@@ -72,7 +72,7 @@ export default defineComponent({
   },
   beforeUnmount() {
     this.$socket.emit(
-      'leave_room',
+      'room::leave',
       this.$store.$router.currentRoute.value.params.channel,
       this.$store.state.writer,
     );
