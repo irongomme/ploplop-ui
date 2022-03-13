@@ -16,9 +16,7 @@ import {
   defineComponent,
 } from 'vue';
 import { useStore } from 'vuex';
-// import { useSocket } from 'boot/socket.io';
 import MessagesList from 'components/MessagesList.vue';
-// import { socket } from 'boot/socket.io';
 
 export default defineComponent({
   name: 'Chat',
@@ -40,16 +38,17 @@ export default defineComponent({
       backToHome,
     };
   },
-  beforeCreate() {
-    // console.log(this.$socket);
-    this.$socket.emit(
-      'room::join',
-      this.$store.$router.currentRoute.value.params.channel,
-      this.$store.state.writer,
-    );
+  mounted() {
+    if (this.$store.$router.currentRoute.value.params.channel !== null) {
+      this.$socket.emit(
+        'room::join',
+        this.$store.$router.currentRoute.value.params.channel,
+        this.$store.state.writer,
+      );
+    }
 
     this.$socket.on('connected', () => {
-      // console.log('connected');
+      console.log('connected');
       this.$socket.emit(
         'room::join',
         this.$store.$router.currentRoute.value.params.channel,
@@ -57,23 +56,23 @@ export default defineComponent({
       );
     });
 
-    this.$socket.on('message::sent', (room) => {
-      // console.log('message_reveive', room);
-      if (room.name === this.$store.state.channel.name) {
-        this.$store.dispatch('channel/setMessages', room.messages);
+    this.$socket.on('message::sent', (message) => {
+      if (message.room.uuid === this.$store.state.channel.uuid) {
+        this.$store.dispatch('channel/addMessage', message);
       }
     });
-    this.$socket.on('room::joined', (room) => {
-      // console.log('room_joined', room);
-      if (room.name === this.$store.state.channel.name) {
-        this.$store.dispatch('channel/setMessages', room.messages);
+    this.$socket.on('room::joined', (payload) => {
+      this.$store.dispatch('channel/setChannel', payload.room);
+
+      if (payload.room.name === this.$store.state.channel.name) {
+        this.$store.dispatch('channel/setMessages', payload.messages);
       }
     });
   },
   beforeUnmount() {
     this.$socket.emit(
       'room::leave',
-      this.$store.$router.currentRoute.value.params.channel,
+      this.$store.state.channel.uuid,
       this.$store.state.writer,
     );
   },

@@ -71,11 +71,9 @@ export default defineComponent({
 
       socket.emit(
         'message::send',
-        $store.state.channel.name,
+        $store.state.channel.uuid,
         socketMessage,
       );
-
-      // $store.dispatch('channel/addMessage', socketMessage);
 
       message.value = '';
     }

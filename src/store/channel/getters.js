@@ -8,10 +8,10 @@ export function getConversation(state) {
     const lastMessage = messageIndex > 0
       ? state.messages[messageIndex - 1]
       : false;
-    const formatedDate = date.formatDate(message.date, 'YYYY-MM-DDTHH:mm:ss');
+    const formatedDate = date.formatDate(message.date, 'HH:mm');
 
     if (lastMessage !== false
-      && (message.date - lastMessage.date < 6000)
+      && (message.date - lastMessage.date < 60000)
       && lastMessage.author.uuid === message.author.uuid) {
       // On complète le message d'avant
       conversation[conversation.length - 1].messages.push(message.text);
